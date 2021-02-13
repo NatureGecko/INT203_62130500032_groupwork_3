@@ -64,11 +64,12 @@
                 <p class="text-5xl px-5 font-bold">{{diaplayname}}</p>
                 <p class="text-2xl px-1 font-light">{{displayquote}}</p>
                 <div class="flex flex-wrap">
-                    <button v-show="!followedbyyou" v-on:click="togglefollowedbyyou()"
+                    <button v-show="!followedbyyou" v-on:click="clickfollowedbyyou()"
                         class="mx-2 px-2 w-24 bg-green-500 text-white  py-1 px-2 rounded bg-opacity-25">Follow</button>
-                    <button v-show="followedbyyou" v-on:click="togglefollowedbyyou()"
+                    <button v-show="followedbyyou" v-on:click="clickfollowedbyyou()"
                         class="mx-2  px-2 w-24 bg-red-500 text-white  py-1 px-2 rounded bg-opacity-25">Unfollow</button>
                     <p class="text-xl px-1 font-light text-black">followed by {{displayfollowed}} people</p>
+                    <p v-show="followedbyyou" class="text-xl px-1 font-light font-light">( Including you )</p>
                 </div>
             </div>
         </div>
@@ -80,21 +81,25 @@
         <div id="body" class="mx-40 bg-yellow-100 bg-opacity-75">
             <!--Header-->
             <div class="py-10 text-center" id="mainsectorheader">
-                <p class="text-5xl text-yellow-900 font-bold"> {{sectordisplayname}}'s gallery</p>
+                <p class="text-5xl text-yellow-900 font-bold"> {{gallerytitle}} </p>
+                <p class="text-2xl text-yellow-900 font-bold">{{sectordisplayname}}'s gallery</p>
             </div>
+            <!--User gallery display sector-->
             <div id="gallery" class="flex flex-col">
-                <div class="" v-for="image in imagesdata">
-                    <img class="" v-bind:src="image.imghref">
-                    <p class="text-3xl text-yellow-900 font-bold">{{image.imgtitle}}</p>
-                    <div class="flex">
-                        <p class="text-2xl text-yellow-900 px-5 w-2/3">{{image.imgdescription}}</p>
-                        <img class="w-1/5" v-bind:src="image.profilehref">
+                <div class="" v-for="(image,index) in imagesdata">
+                    <img class="p-5 bg-gray-900 bg-opacity-25" v-bind:src="image.imghref">
+                    <p class=" p-5 text-4xl text-yellow-900 font-bold">{{image.imgtitle}}</p>
+                    <div class="flex flex-wrap py-5">
+                        <p class="px-10 text-2xl text-yellow-900 px-5 w-2/3">{{image.imgdescription}}</p>
+                        <!--<img class="w-1/5" v-bind:src="image.profilehref">-->
+                        <div class="items-center w-1/3">
+                            <button v-show="image.isliked" v-on:click="likeThisPicture(index)"
+                                class="bg-yellow-900 bg-opacity-25 text-white  py-1 px-2 rounded w-4/5">Undo vote</button>
+                            <button v-show="!image.isliked" v-on:click="likeThisPicture(index)"
+                                class="bg-green-500 text-white  py-1 px-2 rounded w-4/5">Vote</button>
+                                <p class="text-blue-900 font-bold text-xl">You voted {{imagesdata.filter(liked => liked.isliked).length}} out of {{ imagesdata.length }} pictures in this gallery so far.</p>
+                        </div>
                     </div>
-                    <div class="flex"></div>
-                    <button v-on:click="likeThisPicture(index)"
-                        class="bg-green-500 text-white  py-1 px-2 rounded w-1/3">{{image.likedhref}}</button>
-                    <p v-show="" class="text-blue-900 font-bold text-2xl">Liked!</p>
-                    
                 </div>
             </div>
         </div>
